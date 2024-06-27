@@ -1,9 +1,9 @@
-import { useContext, useEffect, useState } from "react";
+import { useCallback, useContext, useEffect, useState } from "react";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { StatusBar } from "expo-status-bar";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import AppLoading from "expo-app-loading";
+import * as SplashScreen from "expo-splash-screen";
 
 import LoginScreen from "./screens/LoginScreen";
 import SignupScreen from "./screens/SignupScreen";
@@ -52,10 +52,10 @@ function AuthenticatedStack() {
   );
 }
 
-function Navigation() {
+function Navigation({ onReady }) {
   const authCtx = useContext(AuthContext);
   return (
-    <NavigationContainer>
+    <NavigationContainer onReady={onReady}>
       {!authCtx.isAuthenticated && <AuthStack />}
       {authCtx.isAuthenticated && <AuthenticatedStack />}
     </NavigationContainer>
@@ -79,11 +79,13 @@ function Root() {
     fetchToken();
   }, []);
 
-  if (isTryingLogin) {
-    return <AppLoading />;
-  }
+  const onLayoutRootView = useCallback(async () => {
+    if (isTryingLogin) {
+      await SplashScreen.hideAsync();
+    }
+  }, [isTryingLogin]);
 
-  return <Navigation />;
+  return <Navigation onReady={onLayoutRootView} />;
 }
 
 export default function App() {

@@ -23,4 +23,3 @@ const styles = StyleSheet.create({
     opacity: 0.7,
   },
 });
-wwwwwwww
