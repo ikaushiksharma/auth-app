@@ -8,7 +8,7 @@ function Input({ label, keyboardType, secure, onUpdateValue, value, isInvalid })
       <Text style={[styles.label, isInvalid && styles.labelInvalid]}>{label}</Text>
       <TextInput
         style={[styles.input, isInvalid && styles.inputInvalid]}
-        autoCorrect={false}
+        autoComplete={false}
         autoCapitalize="none"
         keyboardType={keyboardType}
         secureTextEntry={secure}
